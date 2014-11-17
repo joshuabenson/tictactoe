@@ -70,6 +70,25 @@ return false
 end
 end	
 
+def pick_corner(current_player)
+
+		b = false
+		until b
+			puts "picking random avaoilable corner"
+			arr = [0,2]
+			row = arr[rand(2)]
+			col = arr[rand(2)]
+
+			if 	@board[row][col] == EMPTY_POS
+				@board[row][col] = current_player
+				b = true
+				@found = "Y"
+			end	
+		
+end
+
+end	
+
 def ask_player_for_move(current_player)
 	if current_player == COMPUTER_PLAYER
 		computer_move(current_player)
@@ -103,21 +122,8 @@ check_diagonals(HUMAN_PLAYER, @found)
 		end
 
 		if available_corner() && @found == "F"
-		puts (@found)
-		b = false
-		until b
-			puts "picking corner"
-			arr = [0,2]
-			row = arr[rand(2)]
-			col = arr[rand(2)]
+		pick_corner(current_player)
 
-			if 	@board[row][col] == EMPTY_POS
-				@board[row][col] = current_player
-				b = true
-			end	
-		
-		end
-			
 		elsif @found == "F"
 
 		c = false
@@ -217,7 +223,7 @@ def check_cols(symbol, found)
 
 		for col_index in 0..BOARD_MAX_INDEX
 
-			if @found != "Y" && ary_col[col_index].include?(EMPTY_POS)
+			if @found != "Y" && ary_col[col_index].include?(EMPTY_POS)	
 
 				if !(ary_col[col_index].include?(symbol))
 					puts "#{symbol}not in column #{col_index.to_s}"
@@ -253,10 +259,82 @@ end
 	
 
 def check_diagonals(symbol, found)
-	if found == "Y"
-		return
-	end	
+
+		if found == "Y"
+			return
+		else
+
+			ary_cross = [[],[]]
+
+	
+for i in 0..BOARD_MAX_INDEX
+
+	ary_cross[0].push(@board[i][i])
+
+	ary_cross[1].push(@board[i][(i - 2) * -1])
 end
+
+			
+		
+				
+			if !(ary_cross[0].include?(symbol)) || !(ary_cross[0].include?(symbol))
+					puts "#{symbol}not in cross"
+
+
+					if ary_cross[0].include?(EMPTY_POS) && @found != "Y"
+
+				if ary_cross[0][0] == symbol and ary_cross[0][2] == symbol
+				@board[1][1] = COMPUTER_PLAYER
+				puts "cross win possible by #{symbol}!"
+				 @found = "Y"
+				 return
+				
+				elsif ary_cross[0][0] == symbol and ary_cross[0][1] == symbol 
+				@board[2][2] = COMPUTER_PLAYER
+				puts "cross win possible by #{symbol}!"
+				@found = "Y"
+				return 
+				
+				elsif ary_cross[0][1] == symbol and ary_cross[0][2] == symbol
+				@board[0][0] = COMPUTER_PLAYER
+		 		puts "cross win possible by #{symbol}!"
+				 @found = "Y"
+				 return
+				end		
+					end	 
+
+					if ary_cross[1].include?(EMPTY_POS) && @found != "Y"
+
+ 				if ary_cross[1][0] == symbol and ary_cross[1][2] == symbol
+				@board[1][1] = COMPUTER_PLAYER
+				puts "cross win possible by #{symbol}!"
+				 @found = "Y"
+				 return
+				
+				elsif ary_cross[1][0] == symbol and ary_cross[1][1] == symbol 
+				@board[2][0] = COMPUTER_PLAYER
+				puts "cross win possible by #{symbol}!"
+				@found = "Y"
+				return 
+				
+				elsif ary_cross[1][1] == symbol and ary_cross[1][2] == symbol
+				@board[0][2] = COMPUTER_PLAYER
+		 		puts "cross win possible by #{symbol}!"
+				 @found = "Y"
+				 return
+				elsif
+ 					puts "no wins possible for #{symbol} in cross"
+				end	
+					end
+				end	
+				end
+			
+
+
+
+
+end
+
 
 
 
